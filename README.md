@@ -4,7 +4,7 @@ blabla
 ###### Team
 Diana Ramirez <>  
 Alhassane Bah <>  
-Yassin Bendari  <>  
+Yassin Bendari  <yassine.bendari@gmail.com>  
 Hamza Baaziz <baazizh@gmail.com>  
   
 ###### M2 DSC 2016/17

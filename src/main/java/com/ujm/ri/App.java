@@ -1,9 +1,14 @@
 package com.ujm.ri;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
@@ -86,24 +91,50 @@ public class App {
 	 * printing the index
 	 */
 	public static void printIndex() {
-		for (Entry<String, SortedMap<Integer, Integer>> entry : invertedIndex.entrySet()) {
+		for (Entry<String, SortedMap<Integer, Integer>> entry : invertedIndex
+				.entrySet()) {
 			String term = entry.getKey();
 			SortedMap<Integer, Integer> postings = entry.getValue();
 			System.out.print(term + " [");
 			for (Entry<Integer, Integer> littleEntry : postings.entrySet()) {
-				System.out.print(littleEntry.getKey() + ":" + littleEntry.getValue() + ";");
+				System.out.print(littleEntry.getKey() + ":"
+						+ littleEntry.getValue() + ";");
 			}
 			System.out.println("]");
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void tofile(SortedMap<String, SortedMap<Integer, Integer>> invertedIndex)
+			throws IOException {
+		FileOutputStream fos = new FileOutputStream("index.ser");
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(invertedIndex);
+		oos.close();
+		fos.close();
+		System.out.printf("Serialized HashMap data is saved in hashmap.ser\n");
+	}
+
+	public static void fromfile(String hashmap) throws IOException, ClassNotFoundException {
+		FileInputStream fis = new FileInputStream("index.ser");
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		invertedIndex = (SortedMap<String, SortedMap<Integer, Integer>>) ois.readObject();
+		ois.close();
+		fis.close();
+		System.out.println("Deserialized HashMap..\n");
+	}
+
+	public static void main(String[] args) throws IOException,
+			ClassNotFoundException {
 
 		Long start = System.currentTimeMillis();
 
 		String docId = "";
 
-		File file = new File("doc/Text_Only_Ascii_Coll_MWI_NoSem");
+		File file = new File("docs/Text_Only_Ascii_Coll_MWI_NoSem");
+
+		
+
+		
 
 		LineIterator it = FileUtils.lineIterator(file, "UTF-8");
 		try {
@@ -121,11 +152,14 @@ public class App {
 		} finally {
 			LineIterator.closeQuietly(it);
 		}
-
+		tofile(invertedIndex);
+		invertedIndex.clear();
+		fromfile("index.ser");
 		printIndex();
 
 		Long end = System.currentTimeMillis();
 
-		System.out.println("*** Completed in : " + (end - start) / 1000 + " s ***");
+		System.out.println("*** Completed in : " + (end - start) / 1000
+				+ " s ***");
 	}
 }

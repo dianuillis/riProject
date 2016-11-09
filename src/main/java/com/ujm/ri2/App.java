@@ -1,4 +1,4 @@
-package com.ujm.ri;
+package com.ujm.ri2;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -2,7 +2,7 @@
 blabla  
   
 ###### Team
-Diana Ramirez <>  
+Diana Ramirez <diana.ramirez@etu.univ-st-etienne.fr>  
 Alhassane Bah <>  
 Yassin Bendari  <yassine.bendari@gmail.com>  
 Hamza Baaziz <baazizh@gmail.com>  

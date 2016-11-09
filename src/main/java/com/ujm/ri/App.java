@@ -91,8 +91,8 @@ public class App {
 	/*
 	 * printing the index
 	 */
-	public static void printIndex() {
-		for (Entry<String, SortedMap<Integer, Integer>> entry : invertedIndex
+	public static void printIndex(SortedMap<String, SortedMap<Integer, Integer>> index) {
+		for (Entry<String, SortedMap<Integer, Integer>> entry : index
 				.entrySet()) {
 			String term = entry.getKey();
 			SortedMap<Integer, Integer> postings = entry.getValue();
@@ -146,25 +146,17 @@ public class App {
 					}
 				buildIndex(terms, queryId, queryIndex);
 				
-				for (Entry<String, SortedMap<Integer, Integer>> entry : queryIndex
-						.entrySet()) {
-					String term = entry.getKey();
-					SortedMap<Integer, Integer> postings = entry.getValue();
-					System.out.print(term + " [");
-					for (Entry<Integer, Integer> littleEntry : postings.entrySet()) {
-						System.out.print(littleEntry.getKey() + ":"
-								+ littleEntry.getValue() + ";");
-					}
-					System.out.println("]");
-				}
+				
 				
 			}
 		}
 		finally {
 			LineIterator.closeQuietly(it);
 		}
+		printIndex(queryIndex);
 	}
 	
+	// calculate the weight
 	
 
 	public static void main(String[] args) throws IOException,
@@ -201,7 +193,7 @@ public class App {
 		tofile(invertedIndex);
 		invertedIndex.clear();
 		fromfile("index.ser");
-		printIndex();
+		printIndex(invertedIndex);
 
 		Long end = System.currentTimeMillis();
 

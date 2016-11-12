@@ -8,7 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -23,9 +27,10 @@ public class App {
 	private static SortedMap<String, SortedMap<Integer, Integer>> queryIndex = new TreeMap<>();
 	private static SortedMap<String, SortedMap<Integer, Double>> docWeights = new TreeMap<>();
 	private static SortedMap<String, SortedMap<Integer, Double>> queryWeights = new TreeMap<>();
-	private static SortedMap<Integer, Double> scores = new TreeMap<>();
+	private static Map<Integer, Double> scores = new TreeMap<>();
 
 	private static final int TOTAL_DOCS = 9997248;
+	private static String queryId = "";
 
 	/*
 	 * extracting the id of each document
@@ -150,7 +155,7 @@ public class App {
 				String line = it.nextLine();
 				// if we reach a new document, we change the id
 				String[] splits = line.split(" ");
-				String queryId = splits[0];
+				queryId = splits[0];
 				String[] terms = new String[splits.length - 1];
 
 				for (int i = 1; i < splits.length; i++) {
@@ -227,7 +232,43 @@ public class App {
 			for (Entry<Integer, Double> dentry : dweight.entrySet()) {
 				dentry.setValue(dentry.getValue() * qweight);
 			}
+			for (Entry<Integer, Double> dentry : dweight.entrySet()) {
+				if (scores.containsKey(dentry.getKey())) {
+					scores.put(dentry.getKey(), scores.get(dentry.getKey()) + dentry.getValue());
+				} else {
+					scores.put(dentry.getKey(), dentry.getValue());
+				}
+			}
 		}
+	}
+
+	public static void ranksPrinting() throws IOException {
+		File file = new File("output.txt");
+		int rank = 1;
+		FileUtils.write(file, "QueryNumber Q0 Docno Rank Score TeamName Path\n", "UTF-8", false);
+		for (Entry<Integer, Double> entry : scores.entrySet()) {
+			String line = queryId + " 0 " + entry.getKey() + " " + rank + " " + entry.getValue() + " " + "DYHA" + " "
+					+ "\\article[1]\n";
+			FileUtils.write(file, line, "UTF-8", true);
+			rank++;
+		}
+
+	}
+
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+			@Override
+			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+				return -(o1.getValue()).compareTo(o2.getValue());
+			}
+		});
+
+		Map<K, V> result = new LinkedHashMap<>();
+		for (Map.Entry<K, V> entry : list) {
+			result.put(entry.getKey(), entry.getValue());
+		}
+		return result;
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -288,7 +329,11 @@ public class App {
 		calculateScores();
 		System.out.println("---------------------");
 		printIndexD(docWeights);
-
+		System.out.println("---------------------");
+		scores = sortByValue(scores);
+		System.out.println(scores);
+		ranksPrinting();
+		System.out.println("done");
 	}
 
 }

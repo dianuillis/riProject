@@ -1,0 +1,6 @@
+<doc><docno>111</docno>
+hello hello and bye
+</doc>
+<doc><docno>222</docno>
+and good
+</doc>

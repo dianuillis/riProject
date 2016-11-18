@@ -1,4 +1,7 @@
+# hamza : generated files
 *.ser
+*.log
+
 # Created by https://www.gitignore.io/api/eclipse,maven
 
 ### Eclipse ###

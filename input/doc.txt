@@ -1,6 +1,84 @@
-<doc><docno>111</docno>
-hello hello and bye
-</doc>
-<doc><docno>222</docno>
-and good
-</doc>
+#step run input(text/xml) type(article/sec/p) algo(ltn/ltc/bm25/bm25fa/fm25fp) k b alpha_title alpha_category alpha_abstract alpha_content grouped(0/1)
+#
+#03 01 text article ltn 0.0 0.0 0
+#03 02 text article ltc 0.0 0.0 0
+#03 03 text article bm25 1.0 0.5 0
+#03 04 text article bm25 1.2 0.7 0
+#03 05 text article bm25 0.0 1.0 0
+#03 06 text article bm25 20.0 1.0 0
+#03 07 text article bm25 5.0 1.0 0
+#03 08 text article bm25 1.5 1.0 0
+#03 09 text article bm25 10000.0 1.0 0
+#03 10 text article bm25 10000.0 0.0 0
+#
+#04 01 xml article ltn 0.0 0.0 0
+#04 02 xml article ltc 0.0 0.0 0
+#04 03 xml article bm25 1.0 0.5 0
+#04 04 xml article bm25 1.2 0.7 0
+#04 05 xml article bm25 0.0 1.0 0
+#04 06 xml article bm25 20.0 1.0 0
+#04 07 xml article bm25 5.0 1.0 0
+#04 08 xml article bm25 1.5 1.0 0
+#04 09 xml article bm25 10000.0 1.0 0
+#04 10 xml article bm25 10000.0 0.0 0
+#
+#04 01 xml article ltn 0.0 0.0 0
+#04 02 xml article ltc 0.0 0.0 0
+#04 03 xml article bm25 1.0 0.5 0
+#04 04 xml article bm25 1.2 0.7 0
+#04 05 xml sec ltn 0.0 0.0 0
+#04 06 xml sec ltc 0.0 0.0 0
+#04 07 xml sec bm25 1.0 0.5 0
+#04 08 xml sec bm25 1.2 0.7 0
+#
+#05 01 xml article bm25 1.0 0.5 1.0 1.0 1.0 1.0 0
+#05 02 xml article bm25fa 1.0 0.5 4.0 3.0 2.0 1.0 0
+#05 03 xml article bm25fp 1.0 0.5 4.0 3.0 2.0 1.0 0
+#
+#05 01 xml p bm25 1.0 0.5 0.0 0.0 0.0 0.0 1
+#05 02 xml p bm25 1.0 0.5 0.0 0.0 0.0 0.0 0
+#05 03 xml p ltn 0.0 0.0 0.0 0.0 0.0 0.0 1
+#05 04 xml p ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
+#05 05 xml p ltc 0.0 0.0 0.0 0.0 0.0 0.0 1
+#05 06 xml p ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
+#
+# LTN all
+#
+06 01 text article ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
+06 02 xml article ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
+06 03 xml sec ltn 0.0 0.0 0.0 0.0 0.0 0.0 1
+06 04 xml sec ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
+06 05 xml p ltn 0.0 0.0 0.0 0.0 0.0 0.0 1
+06 06 xml p ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
+#
+# LTC all
+#
+06 07 text article ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
+06 08 xml article ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
+06 09 xml sec ltc 0.0 0.0 0.0 0.0 0.0 0.0 1
+06 10 xml sec ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
+06 11 xml p ltc 0.0 0.0 0.0 0.0 0.0 0.0 1
+06 12 xml p ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
+#
+# BM25 article text
+#
+06 13 text article bm25 1.0 0.85 0.0 0.0 0.0 0.0 0
+06 14 text article bm25 0.9 0.2 0.0 0.0 0.0 0.0 0
+06 15 text article bm25 1.0 0.5 0.0 0.0 0.0 0.0 0
+06 16 text article bm25 3.0 0.5 0.0 0.0 0.0 0.0 0
+06 17 text article bm25 1.0 0.7 0.0 0.0 0.0 0.0 0
+06 18 text article bm25 1.5 0.7 0.0 0.0 0.0 0.0 0
+06 19 text article bm25 1.22 0.7 0.0 0.0 0.0 0.0 0
+06 20 text article bm25 1.22 0.8 0.0 0.0 0.0 0.0 0
+#
+# BM25 article xml
+#
+06 21 xml article bm25 1.0 0.85 0.0 0.0 0.0 0.0 0
+06 14 xml article bm25 0.9 0.2 0.0 0.0 0.0 0.0 0
+06 15 xml article bm25 1.0 0.5 0.0 0.0 0.0 0.0 0
+06 16 xml article bm25 3.0 0.5 0.0 0.0 0.0 0.0 0
+06 17 xml article bm25 1.0 0.7 0.0 0.0 0.0 0.0 0
+06 18 xml article bm25 1.5 0.7 0.0 0.0 0.0 0.0 0
+06 19 xml article bm25 1.22 0.7 0.0 0.0 0.0 0.0 0
+06 20 xml article bm25 1.22 0.8 0.0 0.0 0.0 0.0 0
+

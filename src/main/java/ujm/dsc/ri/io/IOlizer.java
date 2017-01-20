@@ -15,18 +15,6 @@ public class IOlizer {
 
 	private static final Logger log = LogManager.getLogger(IOlizer.class.getName());
 
-	public void serialize(Object object, String filePath) throws IOException {
-		log.info("Saving to " + filePath);
-		long start = System.currentTimeMillis();
-		FileOutputStream fos = new FileOutputStream("output/" + filePath);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(object);
-		oos.close();
-		fos.close();
-		long end = System.currentTimeMillis();
-		log.info("Done in " + (end - start) / 1000.00 + " seconds");
-	}
-
 	public Object dserialize(String filePath) throws IOException, ClassNotFoundException {
 		log.info("Reading from " + filePath);
 		long start = System.currentTimeMillis();
@@ -38,6 +26,18 @@ public class IOlizer {
 		long end = System.currentTimeMillis();
 		log.info("Done in " + (end - start) / 1000.00 + " seconds");
 		return object;
+	}
+
+	public void serialize(Object object, String filePath) throws IOException {
+		log.info("Saving to " + filePath);
+		long start = System.currentTimeMillis();
+		FileOutputStream fos = new FileOutputStream("output/" + filePath);
+		ObjectOutputStream oos = new ObjectOutputStream(fos);
+		oos.writeObject(object);
+		oos.close();
+		fos.close();
+		long end = System.currentTimeMillis();
+		log.info("Done in " + (end - start) / 1000.00 + " seconds");
 	}
 
 }

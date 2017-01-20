@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RISLogFile extends DefaultHistoryFileNameProvider {
 
+	@Override
 	public String getHistoryFileName() {
 		return "ris.log";
 	}

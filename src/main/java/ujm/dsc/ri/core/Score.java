@@ -1,28 +1,23 @@
 package ujm.dsc.ri.core;
 
-import java.io.Serializable;
-
-import org.springframework.stereotype.Component;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@Component
 @Data
-@EqualsAndHashCode(exclude = { "value" })
-public class Score implements Serializable, Comparable<Score> {
+public class Score implements Comparable<Score> {
 
-	private static final long serialVersionUID = -4302546949972038261L;
+	private String sec;
 
-	private Long docId;
+	private Double score;
 
-	private Long queryId;
-
-	private Double value;
+	public Score(String sec, Double score) {
+		super();
+		this.sec = sec;
+		this.score = score;
+	}
 
 	@Override
-	public int compareTo(Score score) {
-		return (int) (this.value - score.getValue());
+	public int compareTo(Score s) {
+		return (int) (this.score - s.score);
 	}
 
 }

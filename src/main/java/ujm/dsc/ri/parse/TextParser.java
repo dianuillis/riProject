@@ -2,6 +2,9 @@ package ujm.dsc.ri.parse;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
@@ -11,44 +14,52 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import lombok.Data;
 import ujm.dsc.ri.clean.Cleaner;
-import ujm.dsc.ri.core.Doc;
-import ujm.dsc.ri.core.DocumentsCollection;
+import ujm.dsc.ri.core.InvertedIndex;
 
 @Component
+@Data
 public class TextParser {
 
+	public static final String DOC_TEXT_PATH = "input/Text_Only_Ascii_Coll_MWI_NoSem";
+	public static final String TEST_DOC_TEXT_PATH = "input/doc.txt";
 	private static final Logger log = LogManager.getLogger(TextParser.class.getName());
 
-	public static final String DOC_TEXT_PATH = "input/Text_Only_Ascii_Coll_MWI_NoSem";
+	private SortedMap<Long, Double> termsNbr = new TreeMap<>();
 
 	@Autowired
-	private Cleaner cleaner = new Cleaner();
+	private Cleaner cleaner;
 
-	public DocumentsCollection parseTextFile(String filePath) throws IOException {
-		log.info("Indexing text file " + filePath);
+	private String extractDocId(String line) {
+		return line.split("<doc><docno>")[1].split("<")[0];
+	}
+
+	public InvertedIndex<Long> parse(String filePath, Set<String> uniqueTerms) throws IOException {
+		log.info("Building inverted index for text file " + filePath);
 		long start = System.currentTimeMillis();
-		DocumentsCollection collection = new DocumentsCollection();
-		Doc document = new Doc();
-		File file = new File(DOC_TEXT_PATH);
+		InvertedIndex<Long> index = new InvertedIndex<Long>();
+		File file = new File(filePath);
+		Long docId = null;
+		int cpt = 0;
 		LineIterator it = FileUtils.lineIterator(file, "UTF-8");
 		try {
 			while (it.hasNext()) {
 				String line = it.nextLine();
 				if (line.trim().startsWith("<doc>")) {
-					Long id = Long.valueOf(cleaner.extractDocId(line));
-					document.setId(id);
-				} else if (line.trim().startsWith("</doc>")) {
-					collection.addDocument(document);
-					// if (collection.getDocuments().size() == 1500)
-					// return collection;
-					document = new Doc();
-					// System.out.println("done > " + step++);
-				} else {
+					docId = Long.valueOf(extractDocId(line));
+					index.setDocNbr(index.getDocNbr() + 1);
+				} else if (!line.trim().startsWith("</doc>")) {
 					String[] words = cleaner.cleanLine(StringUtils.split(line));
-					for (String word : words) {
-						document.addTerm(cleaner.cleanWord(word));
+					cpt += words.length;
+					// TODO LEMMA STEM STOP
+					for (String term : words) {
+						if (uniqueTerms.contains(term))
+							index.addTerm(term, docId, 1.0);
 					}
+				} else { // TODO is this ok ?
+					termsNbr.put(docId, (double) cpt);
+					cpt = 0;
 				}
 			}
 		} finally {
@@ -56,7 +67,7 @@ public class TextParser {
 		}
 		long end = System.currentTimeMillis();
 		log.info("Done in " + (end - start) / 1000.00 + " seconds");
-		return collection;
+		return index;
 	}
 
 }

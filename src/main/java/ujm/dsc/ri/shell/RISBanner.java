@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RISBanner extends DefaultBannerProvider {
 
+	@Override
 	public String getBanner() {
 		StringBuffer b = new StringBuffer();
 		b.append(" ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄ " + OsUtils.LINE_SEPARATOR);
@@ -27,17 +28,19 @@ public class RISBanner extends DefaultBannerProvider {
 		return b.toString();
 	}
 
+	@Override
+	public String getProviderName() {
+		return "ris";
+	}
+
+	@Override
 	public String getVersion() {
 		return "1.0-SNAPSHOT";
 	}
 
+	@Override
 	public String getWelcomeMessage() {
 		return "welcome to RIS shell";
-	}
-
-	@Override
-	public String getProviderName() {
-		return "ris";
 	}
 
 }

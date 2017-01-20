@@ -1,9 +1,9 @@
 ### Projet RI
   
 ###### Team
-Diana Ramirez <diana.ramirez@etu.univ-st-etienne.fr>  
 Alhassane Bah <>  
-Yassin Bendari  <yassine.bendari@gmail.com>  
+Diana Ramirez <diana.ramirez@etu.univ-st-etienne.fr>  
 Hamza Baaziz <baazizh@gmail.com>  
+Yassin Bendari  <yassine.bendari@gmail.com>  
   
 ###### M2 DSC 2016/17

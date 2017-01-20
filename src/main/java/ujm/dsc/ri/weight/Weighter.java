@@ -1,7 +1,7 @@
 package ujm.dsc.ri.weight;
 
-import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -9,82 +9,81 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
-import ujm.dsc.ri.core.Doc;
-import ujm.dsc.ri.core.DocumentsCollection;
-import ujm.dsc.ri.core.QueriesCollection;
-import ujm.dsc.ri.core.Query;
+import ujm.dsc.ri.core.InvertedIndex;
 
 @Component
 public class Weighter {
-
 	private static final Logger log = LogManager.getLogger(Weighter.class.getName());
 
-	public SortedMap<String, SortedMap<Long, Double>> weightDocsLTN(DocumentsCollection documentsCollection,
-			QueriesCollection queriesCollection) {
-		log.info("Calculating documents weights");
-		long start = System.currentTimeMillis();
-		SortedMap<String, SortedMap<Long, Double>> docWeights = new TreeMap<>();
-		Iterator<Query> qiterator = queriesCollection.getQueries().iterator();
-		while (qiterator.hasNext()) {
-			Query query = qiterator.next();
-			for (Entry<String, Integer> qentry : query.getTerms().entrySet()) {
-				SortedMap<Long, Double> termWeight = new TreeMap<>();
-				String term = qentry.getKey();
-				int df = documentsCollection.getDocumentFequency(term);
-				double t = 0;
-				if (df != 0)
-					t = Math.log10(documentsCollection.getDocuments().size() / df);
-				Iterator<Doc> diterator = documentsCollection.getDocuments().iterator();
-				while (diterator.hasNext()) {
-					Doc document = diterator.next();
-					if (document.getTerms().containsKey(term)) {
-						int tf = document.getTerms().get(term);
-						double l = 1 + Math.log10(tf);
-						double w = l * t;
-						termWeight.put(document.getId(), w);
-					} else {
-						termWeight.put(document.getId(), 0.0);
-					}
-					// pass a copy
-					docWeights.put(term, new TreeMap<>(termWeight));
-					// termWeight.clear();
-				}
-			}
+	// TODO double the shit in this function
+	public <T> SortedMap<String, SortedMap<T, Double>> weightBM25(InvertedIndex<T> index, SortedMap<T, Double> termsNbr,
+			double k, double b) {
+
+		double avdl = 0.0;
+		for (Map.Entry<T, Double> entry : termsNbr.entrySet()) {
+			avdl += entry.getValue();
 		}
-		long end = System.currentTimeMillis();
-		log.info("Done in " + (end - start) / 1000.00 + " seconds");
-		// System.out.println(docWeights);
-		return docWeights;
+		avdl = avdl / termsNbr.size();
+
+		SortedMap<String, SortedMap<T, Double>> weights = new TreeMap<>();
+		for (Map.Entry<String, SortedMap<T, Double>> entry : index.getTerms().entrySet()) {
+			SortedMap<T, Double> tmp = new TreeMap<>();
+			for (Map.Entry<T, Double> subentry : entry.getValue().entrySet()) {
+				double tf = (subentry.getValue() * (k + 1))
+						/ (k * ((1 - b) + b * (termsNbr.get(subentry.getKey()) / avdl)) + subentry.getValue());
+
+				double idf = Math
+						.log10((index.getDocNbr() - entry.getValue().size() + 0.5) / (entry.getValue().size() + 0.5));
+				double bm25 = tf * idf;
+
+				tmp.put(subentry.getKey(), bm25);
+			}
+			weights.put(entry.getKey(), tmp);
+		}
+		return weights;
 	}
 
-	public SortedMap<String, SortedMap<Long, Double>> weightQueryLTN(DocumentsCollection documentsCollection,
-			QueriesCollection queriesCollection) {
-		log.info("Calculating documents weights");
-		long start = System.currentTimeMillis();
-		SortedMap<String, SortedMap<Long, Double>> queryWeights = new TreeMap<>();
-		Iterator<Query> qiterator = queriesCollection.getQueries().iterator();
-		while (qiterator.hasNext()) {
-			Query query = qiterator.next();
-			for (Entry<String, Integer> qentry : query.getTerms().entrySet()) {
-				SortedMap<Long, Double> termWeights = new TreeMap<>();
-				String term = qentry.getKey();
-				int df = documentsCollection.getDocumentFequency(term);
-				double t = 0;
-				if (df != 0)
-					// t = Math.log10(documentsCollection.getDocuments().size()
-					// / df);
-					t = Math.log10(1500 / df);
-				int tf = query.getTerms().get(term);
-				double l = 1 + Math.log10(tf);
-				double w = l * t;
-				termWeights.put(query.getId(), w);
-				queryWeights.put(term, termWeights);
+	public <T> SortedMap<String, SortedMap<T, Double>> weightLTC(InvertedIndex<T> index) {
+		Map<T, Double> norm = new HashMap<>();
+		SortedMap<String, SortedMap<T, Double>> weights = new TreeMap<>();
+		for (Map.Entry<String, SortedMap<T, Double>> entry : index.getTerms().entrySet()) {
+			SortedMap<T, Double> tmp = new TreeMap<>();
+			for (Map.Entry<T, Double> subentry : entry.getValue().entrySet()) {
+				double tf = 1 + Math.log10((double) subentry.getValue());
+				double idf = Math.log10((double) index.getDocNbr() / (double) entry.getValue().size());
+				double ltn = tf * idf;
+				tmp.put(subentry.getKey(), ltn);
+				if (!norm.containsKey(subentry.getKey()))
+					norm.put(subentry.getKey(), ltn * ltn);
+				else
+					norm.put(subentry.getKey(), norm.get(subentry.getKey()) + (ltn * ltn));
+			}
+			weights.put(entry.getKey(), tmp);
+		}
+		for (Map.Entry<String, SortedMap<T, Double>> zentry : weights.entrySet()) {
+			for (Map.Entry<T, Double> xentry : zentry.getValue().entrySet()) {
+				Double tmp = 0.0;
+				if (norm.get(xentry.getKey()) != 0)
+					tmp = xentry.getValue() / Math.sqrt(norm.get(xentry.getKey()));
+				zentry.getValue().put(xentry.getKey(), tmp);
 			}
 		}
-		long end = System.currentTimeMillis();
-		log.info("Done in " + (end - start) / 1000.00 + " seconds");
-		// System.out.println(queryWeights);
-		return queryWeights;
+		return weights;
+	}
+
+	public <T> SortedMap<String, SortedMap<T, Double>> weightLTN(InvertedIndex<T> index) {
+		SortedMap<String, SortedMap<T, Double>> weights = new TreeMap<>();
+		for (Map.Entry<String, SortedMap<T, Double>> entry : index.getTerms().entrySet()) {
+			SortedMap<T, Double> tmp = new TreeMap<>();
+			for (Map.Entry<T, Double> subentry : entry.getValue().entrySet()) {
+				double tf = 1 + Math.log10((double) subentry.getValue());
+				double idf = Math.log10((double) index.getDocNbr() / (double) entry.getValue().size());
+				double ltn = tf * idf;
+				tmp.put(subentry.getKey(), ltn);
+			}
+			weights.put(entry.getKey(), tmp);
+		}
+		return weights;
 	}
 
 }

@@ -8,7 +8,8 @@ Yassin Bendari
 It's a JAVA shell commands application that **requires JDK 7 & MAVEN 3**
 #### How to parameter the application ?
 **{root} = root folder of the project**
-| Class  | variable | Description
+
+| Class  | Variable | Description
 | ----- | ----- | -----
 | ujm.dsc.ri.output.Outputer | OUTPUT_FOLDER_PATH | relative (to {root}) path of the folder where run files will be generated
 | ujm.dsc.ri.output.Outputer | TEAM_NAME | name of the Team (for run name)
@@ -21,9 +22,11 @@ It's a JAVA shell commands application that **requires JDK 7 & MAVEN 3**
 | ujm.dsc.ri.plot.Ploter | CSV_OUTPUT_FILE | relative path of the comparison CSV file of runs evaluations
 | ujm.dsc.ri.plot.Ploter | WIDTH | width of plot (jpg)
 | ujm.dsc.ri.plot.Ploter | HEIGHT | height of plot (jpg)
+
 #### How to parameter the runs ?
 In the RUNS_PARAMS_FILE (${root}/input/run.txt) :  
 Describe the runs that you want to generate respecting the same format given in the examples inside **(it's self explanatory)**
+
 #### How to build ?
 ```
 {root} > $ mvn clean package

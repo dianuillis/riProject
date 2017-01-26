@@ -17,7 +17,6 @@ import ujm.dsc.ri.core.QueryCollection;
 public class QueryParser {
 
 	public static final String QUERY_PATH = "input/topics_M2DSC7Q_2016_17.txt";
-	public static final String TEST_QUERY_PATH = "input/query.txt";
 	private static final Logger log = LogManager.getLogger(QueryParser.class.getName());
 
 	public QueryCollection parse(String filePath) throws IOException {

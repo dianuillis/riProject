@@ -14,16 +14,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
 import ujm.dsc.ri.clean.Cleaner;
 import ujm.dsc.ri.core.InvertedIndex;
 
 @Component
-@Data
 public class TextParser {
 
 	public static final String DOC_TEXT_PATH = "input/Text_Only_Ascii_Coll_MWI_NoSem";
-	public static final String TEST_DOC_TEXT_PATH = "input/doc.txt";
 	private static final Logger log = LogManager.getLogger(TextParser.class.getName());
 
 	private SortedMap<Long, Double> termsNbr = new TreeMap<>();
@@ -33,6 +30,14 @@ public class TextParser {
 
 	private String extractDocId(String line) {
 		return line.split("<doc><docno>")[1].split("<")[0];
+	}
+
+	public Cleaner getCleaner() {
+		return cleaner;
+	}
+
+	public SortedMap<Long, Double> getTermsNbr() {
+		return termsNbr;
 	}
 
 	public InvertedIndex<Long> parse(String filePath, Set<String> uniqueTerms) throws IOException {
@@ -68,6 +73,14 @@ public class TextParser {
 		long end = System.currentTimeMillis();
 		log.info("Done in " + (end - start) / 1000.00 + " seconds");
 		return index;
+	}
+
+	public void setCleaner(Cleaner cleaner) {
+		this.cleaner = cleaner;
+	}
+
+	public void setTermsNbr(SortedMap<Long, Double> termsNbr) {
+		this.termsNbr = termsNbr;
 	}
 
 }

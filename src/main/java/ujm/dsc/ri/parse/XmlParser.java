@@ -31,17 +31,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import lombok.Data;
 import ujm.dsc.ri.clean.Cleaner;
 import ujm.dsc.ri.core.InvertedIndex;
 
 @Component
-@Data
 public class XmlParser {
 
 	public static final String XML_FOLDER_PATH = "input/coll/"; // TODO fix this
 																// shit col
-	public static final String TEST_XML_FOLDER_PATH = "input/coll2/";
 	private static final Logger log = LogManager.getLogger(XmlParser.class.getName());
 
 	@Autowired
@@ -82,6 +79,14 @@ public class XmlParser {
 		return content;
 	}
 
+	public Cleaner getCleaner() {
+		return cleaner;
+	}
+
+	public Set<Long> getDocIds() {
+		return docIds;
+	}
+
 	private int getOrder(Node node) {
 		String name = node.getNodeName();
 		int cpt = 1;
@@ -92,6 +97,22 @@ public class XmlParser {
 			}
 		}
 		return cpt;
+	}
+
+	public SortedMap<Long, Double> getTermsNbr() {
+		return termsNbr;
+	}
+
+	public Map<String, SortedMap<Long, Double>> getTermsNbrF() {
+		return termsNbrF;
+	}
+
+	public SortedMap<String, Double> getTermsNbrU() {
+		return termsNbrU;
+	}
+
+	public SortedMap<String, Double> getTermsNbrX() {
+		return termsNbrX;
 	}
 
 	private String getXpath(Node node) {
@@ -548,6 +569,30 @@ public class XmlParser {
 			}
 		}
 		return node;
+	}
+
+	public void setCleaner(Cleaner cleaner) {
+		this.cleaner = cleaner;
+	}
+
+	public void setDocIds(Set<Long> docIds) {
+		this.docIds = docIds;
+	}
+
+	public void setTermsNbr(SortedMap<Long, Double> termsNbr) {
+		this.termsNbr = termsNbr;
+	}
+
+	public void setTermsNbrF(Map<String, SortedMap<Long, Double>> termsNbrF) {
+		this.termsNbrF = termsNbrF;
+	}
+
+	public void setTermsNbrU(SortedMap<String, Double> termsNbrU) {
+		this.termsNbrU = termsNbrU;
+	}
+
+	public void setTermsNbrX(SortedMap<String, Double> termsNbrX) {
+		this.termsNbrX = termsNbrX;
 	}
 
 }

@@ -23,12 +23,15 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
 import ujm.dsc.ri.clean.Cleaner;
+import ujm.dsc.ri.core.Algo;
+import ujm.dsc.ri.core.Element;
 import ujm.dsc.ri.core.InvertedIndex;
 import ujm.dsc.ri.core.QueryCollection;
 import ujm.dsc.ri.output.Outputer;
 import ujm.dsc.ri.parse.QueryParser;
 import ujm.dsc.ri.parse.TextParser;
 import ujm.dsc.ri.parse.XmlParser;
+import ujm.dsc.ri.plot.Ploter;
 import ujm.dsc.ri.score.Scorer;
 import ujm.dsc.ri.weight.Weighter;
 
@@ -37,7 +40,8 @@ public class RISCommands implements CommandMarker {
 
 	public static final String RUNS_PARAMS_FILE = "input/runs.txt";
 
-	private static final String ERROR_MESSAGE = "not supported";
+	private static final String ERROR_MESSAGE = "not supported"; // TODO ziz :
+																	// modify
 
 	@Autowired
 	private TextParser textParser;
@@ -60,6 +64,9 @@ public class RISCommands implements CommandMarker {
 	@Autowired
 	private Cleaner cleaner;
 
+	@Autowired
+	private Ploter ploter;
+
 	@CliCommand(value = "about", help = "app creators")
 	public String about() {
 		return "BAAZIZ Hamza, BAH Alhassan, BENDARI Yassine, RAMIREZ Diana - M2 DSC - UJM 2016/17";
@@ -70,11 +77,34 @@ public class RISCommands implements CommandMarker {
 		return false;
 	}
 
-	@CliCommand(value = "run", help = "to define")
+	@CliCommand(value = "plot", help = "plot method charts in ${root}/" + Ploter.STATS_FOLDER_PATH
+			+ ", runs evaluation must before be placed in ${root}/" + Ploter.EVALUATION_FOLDER_PATH)
+	public String plot() throws IOException {
+		/* Some examples to show how to use this class */
+
+		ploter.plotAllPrecisionByRecall(true); // will plot precisionByRecall
+												// for all
+		// evaluations and produces MAGP CSV
+		// file
+
+		// will plot just for the runs with the specified names, (true= just
+		// current team, false= all teams)
+		String[] runs = { "06_13_bm25", "06_14_bm25", "06_15_bm25", "06_16_bm25", "06_17_bm25", "06_18_bm25",
+				"06_19_bm25", "06_20_bm25" };
+		ploter.plotSpecificPrecisionByRecallGrouped(runs, "BM25 unstructured - article", "bm25_unstructured_article",
+				true);
+
+		ploter.plotPrecisionByRecallGrouped(Algo.bm25fa, Element.all, "bm25fa comparison - all",
+				"bm25fa_comparison_all", true);
+		return "Done ! plots & comparison CSV generated in ${root}/" + Ploter.STATS_FOLDER_PATH;
+	}
+
+	@CliCommand(value = "run", help = "produces runs in ${root}/" + Outputer.OUTPUT_FOLDER_PATH
+			+ " according to what's defined in ${root}/" + RUNS_PARAMS_FILE)
 	public String run() throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
 
 		// remove old runs
-		cleaner.cleanOutputFolder(Cleaner.OUTPUT_FOLDER_PATH);
+		cleaner.cleanOutputFolder(Outputer.OUTPUT_FOLDER_PATH);
 
 		// inits
 		InvertedIndex<Long> textInvertedIndex = null;
@@ -100,7 +130,7 @@ public class RISCommands implements CommandMarker {
 
 		// 1st pass for opt1
 		for (String line : lines) {
-			if (!line.startsWith("#")) {
+			if (!line.trim().isEmpty() && !line.trim().startsWith("#")) {
 				String input = line.split(" ")[2];
 				String type = line.split(" ")[3];
 				if (input.equals("text"))
@@ -131,8 +161,8 @@ public class RISCommands implements CommandMarker {
 
 		// heavy shit
 		for (String line : lines) {
-			if (!line.startsWith("#")) {
-				String[] params = line.split(" ");
+			if (!line.trim().isEmpty() && !line.trim().startsWith("#")) {
+				String[] params = line.trim().split(" ");
 				if (params[3].equals("article")) {
 					if (params[2].equals("text")) {
 						switch (params[4]) {
@@ -165,6 +195,7 @@ public class RISCommands implements CommandMarker {
 							weights = weighter.weightBM25(xmlInvertedIndex, xmlParser.getTermsNbr(),
 									Double.valueOf(params[5]), Double.valueOf(params[6]));
 							scores = scorer.calculate(weights, queries.getTerms());
+							break;
 						case "bm25fa":
 							Map<String, Double> alphas = new HashMap<>();
 							alphas.put("title", Double.valueOf(params[7]));
@@ -335,14 +366,7 @@ public class RISCommands implements CommandMarker {
 							return ERROR_MESSAGE;
 						}
 						secScores = scorer.calculate(secWeights, queries.getTerms());
-						if (params[11].equals("0"))
-							outputer.outputK(secScores, params[0], params[1], params[4], params[3], params[5],
-									params[6]);
-						else if (params[11].equals("1"))
-							outputer.outputU(secScores, params[0], params[1], params[4], params[3], params[5],
-									params[6]);
-						else
-							return ERROR_MESSAGE;
+						outputer.outputU(secScores, params[0], params[1], params[4], params[3], params[5], params[6]);
 					} else {
 						return ERROR_MESSAGE;
 					}
@@ -369,12 +393,7 @@ public class RISCommands implements CommandMarker {
 							return ERROR_MESSAGE;
 						}
 						pScores = scorer.calculate(pWeights, queries.getTerms());
-						if (params[11].equals("0"))
-							outputer.outputK(pScores, params[0], params[1], params[4], params[3], params[5], params[6]);
-						else if (params[11].equals("1"))
-							outputer.outputU(pScores, params[0], params[1], params[4], params[3], params[5], params[6]);
-						else
-							return ERROR_MESSAGE;
+						outputer.outputU(pScores, params[0], params[1], params[4], params[3], params[5], params[6]);
 					} else {
 						return ERROR_MESSAGE;
 					}
@@ -382,7 +401,7 @@ public class RISCommands implements CommandMarker {
 					return ERROR_MESSAGE;
 			}
 		}
-		return "";
+		return "Done ! runs generated in ${root}/" + Outputer.OUTPUT_FOLDER_PATH;
 	}
 
 }

@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Outputer {
 
-	public static final String OUTPUT_FOLDER = "output/";
-	public static final String TMP_OUTPUT_FOLDER = OUTPUT_FOLDER + "tmp/";
+	public static final String OUTPUT_FOLDER_PATH = "output/";
+	public static final String TMP_OUTPUT_FOLDER = OUTPUT_FOLDER_PATH + "tmp/";
 	public static final String TEAM_NAME = "DianaYassineAlhassanHamza";
 
 	private void mergefiles() throws IOException {
@@ -23,7 +23,7 @@ public class Outputer {
 				TrueFileFilter.INSTANCE);
 		for (File file : files) {
 			List<String> lines = FileUtils.readLines(file, "UTF-8");
-			FileUtils.writeLines(new File(OUTPUT_FOLDER + file.getName().split("#")[0] + ".txt"), lines, true);
+			FileUtils.writeLines(new File(OUTPUT_FOLDER_PATH + file.getName().split("#")[0] + ".txt"), lines, true);
 			FileUtils.deleteQuietly(file);
 		}
 	}
@@ -32,14 +32,14 @@ public class Outputer {
 			String atitle, String acategory, String aabstract, String acontent) throws IOException {
 		String outputPath = "";
 		if (algo.equals("bm25"))
-			outputPath = OUTPUT_FOLDER + TEAM_NAME + "_" + step + "_" + run + "_" + algo + "_articles.k" + k + "b" + b
-					+ ".txt";
+			outputPath = OUTPUT_FOLDER_PATH + TEAM_NAME + "_" + step + "_" + run + "_" + algo + "_articles.k" + k + "b"
+					+ b + ".txt";
 		else if (algo.startsWith("bm25f"))
-			outputPath = OUTPUT_FOLDER + TEAM_NAME + "_" + step + "_" + run + "_" + algo + "_articles.k" + k + "b" + b
-					+ "atitle" + atitle + "acategory" + acategory + "aabstract" + aabstract + "acontent" + acontent
+			outputPath = OUTPUT_FOLDER_PATH + TEAM_NAME + "_" + step + "_" + run + "_" + algo + "_articles.k" + k + "b"
+					+ b + "atitle" + atitle + "acategory" + acategory + "aabstract" + aabstract + "acontent" + acontent
 					+ ".txt";
 		else
-			outputPath = OUTPUT_FOLDER + TEAM_NAME + "_" + step + "_" + run + "_" + algo + "_articles.txt";
+			outputPath = OUTPUT_FOLDER_PATH + TEAM_NAME + "_" + step + "_" + run + "_" + algo + "_articles.txt";
 		File file = new File(outputPath);
 		int rank = 1;
 		for (Entry<Long, Map<T, Double>> qentry : ranks.entrySet()) {
@@ -51,25 +51,6 @@ public class Outputer {
 				else {
 					rank++;
 				}
-				FileUtils.write(file, line, "UTF-8", true);
-			}
-		}
-	}
-
-	public void outputK(Map<Long, Map<String, Double>> ranks, String step, String run, String algo, String element,
-			String k, String b) throws IOException {
-		for (Entry<Long, Map<String, Double>> qentry : ranks.entrySet()) {
-			String outputPath = OUTPUT_FOLDER + TEAM_NAME + "_" + step + "_" + run + "_" + algo + "_" + element + ".k"
-					+ k + "b" + b + ".txt";
-			if (!algo.equals("bm25"))
-				outputPath = OUTPUT_FOLDER + TEAM_NAME + "_" + step + "_" + run + "_" + algo + "_" + element + ".txt";
-			int rank = 1;
-			for (Entry<String, Double> dentry : qentry.getValue().entrySet()) {
-				File file = new File(outputPath);
-				String line = qentry.getKey() + " 0 " + dentry.getKey().split("\\?")[0] + " " + rank + " "
-						+ dentry.getValue() + " " + TEAM_NAME + " "
-						+ StringUtils.substring(dentry.getKey().split("\\?")[1], 1) + "\n";
-				rank = (rank == 1500) ? 1 : rank + 1;
 				FileUtils.write(file, line, "UTF-8", true);
 			}
 		}

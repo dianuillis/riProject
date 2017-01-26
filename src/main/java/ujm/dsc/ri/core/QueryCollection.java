@@ -8,10 +8,7 @@ import java.util.TreeSet;
 
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
-
 @Component
-@Data
 public class QueryCollection implements Serializable {
 
 	/**
@@ -28,6 +25,22 @@ public class QueryCollection implements Serializable {
 		for (String tmp : terms) {
 			uniqueTerms.add(tmp);
 		}
+	}
+
+	public SortedMap<Long, String[]> getTerms() {
+		return terms;
+	}
+
+	public SortedSet<String> getUniqueTerms() {
+		return uniqueTerms;
+	}
+
+	public void setTerms(SortedMap<Long, String[]> terms) {
+		this.terms = terms;
+	}
+
+	public void setUniqueTerms(SortedSet<String> uniqueTerms) {
+		this.uniqueTerms = uniqueTerms;
 	}
 
 }

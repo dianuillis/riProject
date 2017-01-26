@@ -6,10 +6,7 @@ import java.util.TreeMap;
 
 import org.springframework.stereotype.Component;
 
-import lombok.Data;
-
 @Component
-@Data
 public class InvertedIndex<T> implements Serializable {
 
 	/**
@@ -44,6 +41,22 @@ public class InvertedIndex<T> implements Serializable {
 
 	public void clear() {
 		this.terms.clear();
+	}
+
+	public double getDocNbr() {
+		return docNbr;
+	}
+
+	public SortedMap<String, SortedMap<T, Double>> getTerms() {
+		return terms;
+	}
+
+	public void setDocNbr(double docNbr) {
+		this.docNbr = docNbr;
+	}
+
+	public void setTerms(SortedMap<String, SortedMap<T, Double>> terms) {
+		this.terms = terms;
 	}
 
 }

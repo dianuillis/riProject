@@ -1,134 +1,101 @@
-#step run input(text/xml) type(article/sec/p) algo(ltn/ltc/bm25/bm25fa/bm25fp) k b alpha_title alpha_category alpha_abstract alpha_content grouped(0/1)
-#
+#step run input(text/xml) type(article/sec/p) algo(ltn/ltc/bm25/bm25fa/bm25fp) k b alpha_title alpha_category alpha_abstract alpha_content
+# REMOVE # BEFORE RUNS TO UNCOMMENT (WILL TAKE 1 HOUR ON AN SSD TO FINISH ALL)
+
 # LTN/all
-#
-06 01 text article ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
-06 02 xml article ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
-06 03 xml sec ltn 0.0 0.0 0.0 0.0 0.0 0.0 1
-06 04 xml sec ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
-06 05 xml p ltn 0.0 0.0 0.0 0.0 0.0 0.0 1
-06 06 xml p ltn 0.0 0.0 0.0 0.0 0.0 0.0 0
-#
+
+06 01 text article ltn 0.0 0.0 0.0 0.0 0.0 0.0
+06 02 xml article ltn 0.0 0.0 0.0 0.0 0.0 0.0
+06 03 xml sec ltn 0.0 0.0 0.0 0.0 0.0 0.0
+06 05 xml p ltn 0.0 0.0 0.0 0.0 0.0 0.0
+
 # LTC/all
-#
-06 07 text article ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
-06 08 xml article ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
-06 09 xml sec ltc 0.0 0.0 0.0 0.0 0.0 0.0 1
-06 10 xml sec ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
-06 11 xml p ltc 0.0 0.0 0.0 0.0 0.0 0.0 1
-06 12 xml p ltc 0.0 0.0 0.0 0.0 0.0 0.0 0
-#
+
+#06 07 text article ltc 0.0 0.0 0.0 0.0 0.0 0.0
+#06 08 xml article ltc 0.0 0.0 0.0 0.0 0.0 0.0
+#06 09 xml sec ltc 0.0 0.0 0.0 0.0 0.0 0.0
+#06 11 xml p ltc 0.0 0.0 0.0 0.0 0.0 0.0
+
 # BM25 text/article
-#
-06 13 text article bm25 1.0 0.85 0.0 0.0 0.0 0.0 0
-06 14 text article bm25 0.9 0.2 0.0 0.0 0.0 0.0 0
-06 15 text article bm25 1.0 0.5 0.0 0.0 0.0 0.0 0
-06 16 text article bm25 3.0 0.5 0.0 0.0 0.0 0.0 0
-06 17 text article bm25 1.0 0.7 0.0 0.0 0.0 0.0 0
-06 18 text article bm25 1.5 0.7 0.0 0.0 0.0 0.0 0
-06 19 text article bm25 1.22 0.7 0.0 0.0 0.0 0.0 0
-06 20 text article bm25 1.22 0.8 0.0 0.0 0.0 0.0 0
-#
+
+#06 13 text article bm25 1.0 0.85 0.0 0.0 0.0 0.0
+#06 14 text article bm25 0.9 0.2 0.0 0.0 0.0 0.0
+#06 15 text article bm25 1.0 0.5 0.0 0.0 0.0 0.0
+#06 16 text article bm25 3.0 0.5 0.0 0.0 0.0 0.0
+#06 17 text article bm25 1.0 0.7 0.0 0.0 0.0 0.0
+#06 18 text article bm25 1.5 0.7 0.0 0.0 0.0 0.0
+#06 19 text article bm25 1.22 0.7 0.0 0.0 0.0 0.0
+#06 20 text article bm25 1.22 0.8 0.0 0.0 0.0 0.0
+
 # BM25 xml/article (practically same results as text/article)
-#
-06 21 xml article bm25 1.0 0.5 0.0 0.0 0.0 0.0 0
-06 22 xml article bm25 1.2 0.75 0.0 0.0 0.0 0.0 0
-06 23 xml article bm25 1.2 0.25 0.0 0.0 0.0 0.0 0
-06 24 xml article bm25 2.0 0.75 0.0 0.0 0.0 0.0 0
-#
-# BM25 sec/xml no grouping
-#
-06 25 xml sec bm25 1.0 0.85 0.0 0.0 0.0 0.0 0
-06 26 xml sec bm25 0.9 0.2 0.0 0.0 0.0 0.0 0
-06 27 xml sec bm25 1.0 0.5 0.0 0.0 0.0 0.0 0
-06 28 xml sec bm25 3.0 0.5 0.0 0.0 0.0 0.0 0
-06 29 xml sec bm25 1.0 0.7 0.0 0.0 0.0 0.0 0
-06 30 xml sec bm25 1.5 0.7 0.0 0.0 0.0 0.0 0
-06 31 xml sec bm25 1.22 0.7 0.0 0.0 0.0 0.0 0
-06 32 xml sec bm25 1.22 0.8 0.0 0.0 0.0 0.0 0
-06 33 xml sec bm25 1.2 0.75 0.0 0.0 0.0 0.0 0
-06 34 xml sec bm25 1.2 0.25 0.0 0.0 0.0 0.0 0
-06 35 xml sec bm25 2.0 0.75 0.0 0.0 0.0 0.0 0
-#
-# BM25 sec/xml grouping
-#
-06 36 xml sec bm25 1.0 0.85 0.0 0.0 0.0 0.0 1
-06 37 xml sec bm25 0.9 0.2 0.0 0.0 0.0 0.0 1
-06 38 xml sec bm25 1.0 0.5 0.0 0.0 0.0 0.0 1
-06 39 xml sec bm25 3.0 0.5 0.0 0.0 0.0 0.0 1
-06 40 xml sec bm25 1.0 0.7 0.0 0.0 0.0 0.0 1
-06 41 xml sec bm25 1.5 0.7 0.0 0.0 0.0 0.0 1
-06 42 xml sec bm25 1.22 0.7 0.0 0.0 0.0 0.0 1
-06 43 xml sec bm25 1.22 0.8 0.0 0.0 0.0 0.0 1
-06 44 xml sec bm25 1.2 0.75 0.0 0.0 0.0 0.0 1
-06 45 xml sec bm25 1.2 0.25 0.0 0.0 0.0 0.0 1
-06 46 xml sec bm25 2.0 0.75 0.0 0.0 0.0 0.0 1
-#
-# BM25 p/xml no grouping
-#
-06 47 xml p bm25 1.0 0.85 0.0 0.0 0.0 0.0 0
-06 48 xml p bm25 0.9 0.2 0.0 0.0 0.0 0.0 0
-06 49 xml p bm25 1.0 0.5 0.0 0.0 0.0 0.0 0
-06 50 xml p bm25 3.0 0.5 0.0 0.0 0.0 0.0 0
-06 51 xml p bm25 1.0 0.7 0.0 0.0 0.0 0.0 0
-06 52 xml p bm25 1.5 0.7 0.0 0.0 0.0 0.0 0
-06 53 xml p bm25 1.22 0.7 0.0 0.0 0.0 0.0 0
-06 54 xml p bm25 1.22 0.8 0.0 0.0 0.0 0.0 0
-06 55 xml p bm25 1.2 0.75 0.0 0.0 0.0 0.0 0
-06 56 xml p bm25 1.2 0.25 0.0 0.0 0.0 0.0 0
-06 57 xml p bm25 2.0 0.75 0.0 0.0 0.0 0.0 0
-#
-# BM25 p/xml grouping
-#
-06 58 xml p bm25 1.0 0.85 0.0 0.0 0.0 0.0 1
-06 59 xml p bm25 0.9 0.2 0.0 0.0 0.0 0.0 1
-06 60 xml p bm25 1.0 0.5 0.0 0.0 0.0 0.0 1
-06 61 xml p bm25 3.0 0.5 0.0 0.0 0.0 0.0 1
-06 62 xml p bm25 1.0 0.7 0.0 0.0 0.0 0.0 1
-06 63 xml p bm25 1.5 0.7 0.0 0.0 0.0 0.0 1
-06 64 xml p bm25 1.22 0.7 0.0 0.0 0.0 0.0 1
-06 65 xml p bm25 1.22 0.8 0.0 0.0 0.0 0.0 1
-06 66 xml p bm25 1.2 0.75 0.0 0.0 0.0 0.0 1
-06 67 xml p bm25 1.2 0.25 0.0 0.0 0.0 0.0 1
-06 68 xml p bm25 2.0 0.75 0.0 0.0 0.0 0.0 1
-#
-# BM25fa (apriori) xml/article
-#
-06 69 xml article bm25fa 1.0 0.5 1.0 1.0 1.0 1.0 0
-06 70 xml article bm25fa 1.0 0.85 4.0 3.0 2.0 1.0 0
-06 71 xml article bm25fa 0.9 0.2 4.0 3.0 2.0 1.0 0
-06 72 xml article bm25fa 1.0 0.5 4.0 3.0 2.0 1.0 0
-06 73 xml article bm25fa 1.2 0.7 4.0 3.0 2.0 1.0 0
-06 74 xml article bm25fa 3.0 0.5 4.0 3.0 2.0 1.0 0
-06 75 xml article bm25fa 1.0 0.7 4.0 3.0 2.0 1.0 0
-06 76 xml article bm25fa 1.0 0.5 1.0 0.75 0.50 0.25 0
-06 77 xml article bm25fa 1.0 0.5 2.0 1.6 0.50 0.25 0
-#
-06 78 xml article bm25fa 1.0 0.85 4.0 2.0 3.0 1.0 0
-06 79 xml article bm25fa 0.9 0.2 4.0 2.0 3.0 1.0 0
-06 80 xml article bm25fa 1.0 0.5 4.0 2.0 3.0 1.0 0
-06 81 xml article bm25fa 1.2 0.7 4.0 2.0 0.0 1.0 0
-06 82 xml article bm25fa 3.0 0.5 4.0 2.0 3.0 1.0 0
-06 83 xml article bm25fa 1.0 0.7 4.0 2.0 3.0 1.0 0
-06 84 xml article bm25fa 1.0 0.5 1.0 0.50 0.75 0.25 0
-#
-# BM25fp (posteriori) xml/article
-#
-06 85 xml article bm25fp 1.0 0.5 1.0 1.0 1.0 1.0 0
-06 86 xml article bm25fp 1.0 0.85 4.0 3.0 2.0 1.0 0
-06 87 xml article bm25fp 0.9 0.2 4.0 3.0 2.0 1.0 0
-06 88 xml article bm25fp 1.0 0.5 4.0 3.0 2.0 1.0 0
-06 89 xml article bm25fp 1.2 0.7 4.0 3.0 2.0 1.0 0
-06 90 xml article bm25fp 3.0 0.5 4.0 3.0 2.0 1.0 0
-06 91 xml article bm25fp 1.0 0.7 4.0 3.0 2.0 1.0 0
-06 92 xml article bm25fp 1.0 0.5 1.0 0.75 0.50 0.25 0
-06 93 xml article bm25fp 3.0 0.5 1.0 0.75 0.50 0.25 0
-#
-06 94 xml article bm25fp 1.0 0.85 4.0 2.0 3.0 1.0 0
-06 95 xml article bm25fp 0.9 0.2 4.0 2.0 3.0 1.0 0
-06 96 xml article bm25fp 1.0 0.5 4.0 2.0 3.0 1.0 0
-06 97 xml article bm25fa 1.2 0.7 4.0 2.0 3.0 1.0 0
-06 98 xml article bm25fp 3.0 0.5 4.0 2.0 3.0 1.0 0
-06 99 xml article bm25fp 1.0 0.7 4.0 2.0 3.0 1.0 0
-06 100 xml article bm25fp 1.0 0.5 1.0 0.50 0.75 0.25 0
-#
+
+#06 21 xml article bm25 1.0 0.5 0.0 0.0 0.0 0.0
+#06 22 xml article bm25 1.2 0.75 0.0 0.0 0.0 0.0
+#06 23 xml article bm25 1.2 0.25 0.0 0.0 0.0 0.0
+#06 24 xml article bm25 2.0 0.75 0.0 0.0 0.0 0.0
+
+# BM25 sec/xml
+
+#06 36 xml sec bm25 1.0 0.85 0.0 0.0 0.0 0.0
+#06 37 xml sec bm25 0.9 0.2 0.0 0.0 0.0 0.0
+#06 38 xml sec bm25 1.0 0.5 0.0 0.0 0.0 0.0
+#06 39 xml sec bm25 3.0 0.5 0.0 0.0 0.0 0.0
+#06 40 xml sec bm25 1.0 0.7 0.0 0.0 0.0 0.0
+#06 41 xml sec bm25 1.5 0.7 0.0 0.0 0.0 0.0
+#06 42 xml sec bm25 1.22 0.7 0.0 0.0 0.0 0.0
+#06 43 xml sec bm25 1.22 0.8 0.0 0.0 0.0 0.0
+#06 44 xml sec bm25 1.2 0.75 0.0 0.0 0.0 0.0
+#06 45 xml sec bm25 1.2 0.25 0.0 0.0 0.0 0.0
+#06 46 xml sec bm25 2.0 0.75 0.0 0.0 0.0 0.0
+
+# BM25 p/xml
+
+#06 58 xml p bm25 1.0 0.85 0.0 0.0 0.0 0.0
+#06 59 xml p bm25 0.9 0.2 0.0 0.0 0.0 0.0
+#06 60 xml p bm25 1.0 0.5 0.0 0.0 0.0 0.0
+#06 61 xml p bm25 3.0 0.5 0.0 0.0 0.0 0.0
+#06 62 xml p bm25 1.0 0.7 0.0 0.0 0.0 0.0
+#06 63 xml p bm25 1.5 0.7 0.0 0.0 0.0 0.0
+#06 64 xml p bm25 1.22 0.7 0.0 0.0 0.0 0.0
+#06 65 xml p bm25 1.22 0.8 0.0 0.0 0.0 0.0
+#06 66 xml p bm25 1.2 0.75 0.0 0.0 0.0 0.0
+#06 67 xml p bm25 1.2 0.25 0.0 0.0 0.0 0.0
+#06 68 xml p bm25 2.0 0.75 0.0 0.0 0.0 0.0
+
+# BM25fa (a priori) xml/article
+
+#06 69 xml article bm25fa 1.0 0.5 1.0 1.0 1.0 1.0
+#06 70 xml article bm25fa 1.0 0.85 4.0 3.0 2.0 1.0
+#06 71 xml article bm25fa 0.9 0.2 4.0 3.0 2.0 1.0
+#06 72 xml article bm25fa 1.0 0.5 4.0 3.0 2.0 1.0
+#06 73 xml article bm25fa 1.2 0.7 4.0 3.0 2.0 1.0
+#06 74 xml article bm25fa 3.0 0.5 4.0 3.0 2.0 1.0
+#06 75 xml article bm25fa 1.0 0.7 4.0 3.0 2.0 1.0
+#06 76 xml article bm25fa 1.0 0.5 1.0 0.75 0.50 0.25
+#06 77 xml article bm25fa 1.0 0.5 2.0 1.6 0.50 0.25
+#06 78 xml article bm25fa 1.0 0.85 4.0 2.0 3.0 1.0
+#06 79 xml article bm25fa 0.9 0.2 4.0 2.0 3.0 1.0
+#06 80 xml article bm25fa 1.0 0.5 4.0 2.0 3.0 1.0
+#06 81 xml article bm25fa 1.2 0.7 4.0 2.0 0.0 1.0
+#06 82 xml article bm25fa 3.0 0.5 4.0 2.0 3.0 1.0
+#06 83 xml article bm25fa 1.0 0.7 4.0 2.0 3.0 1.0
+#06 84 xml article bm25fa 1.0 0.5 1.0 0.50 0.75 0.25
+
+# BM25fp (a posteriori) xml/article
+
+#06 85 xml article bm25fp 1.0 0.5 1.0 1.0 1.0 1.0
+#06 86 xml article bm25fp 1.0 0.85 4.0 3.0 2.0 1.0
+#06 87 xml article bm25fp 0.9 0.2 4.0 3.0 2.0 1.0
+#06 88 xml article bm25fp 1.0 0.5 4.0 3.0 2.0 1.0
+#06 89 xml article bm25fp 1.2 0.7 4.0 3.0 2.0 1.0
+#06 90 xml article bm25fp 3.0 0.5 4.0 3.0 2.0 1.0
+#06 91 xml article bm25fp 1.0 0.7 4.0 3.0 2.0 1.0
+#06 92 xml article bm25fp 1.0 0.5 1.0 0.75 0.50 0.25
+#06 93 xml article bm25fp 3.0 0.5 1.0 0.75 0.50 0.25
+#06 94 xml article bm25fp 1.0 0.85 4.0 2.0 3.0 1.0
+#06 95 xml article bm25fp 0.9 0.2 4.0 2.0 3.0 1.0
+#06 96 xml article bm25fp 1.0 0.5 4.0 2.0 3.0 1.0
+#06 97 xml article bm25fa 1.2 0.7 4.0 2.0 3.0 1.0
+#06 98 xml article bm25fp 3.0 0.5 4.0 2.0 3.0 1.0
+#06 99 xml article bm25fp 1.0 0.7 4.0 2.0 3.0 1.0
+#06 100 xml article bm25fp 1.0 0.5 1.0 0.50 0.75 0.25
+

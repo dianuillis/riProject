@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class Cleaner {
 
-	public static final String OUTPUT_FOLDER_PATH = "output/";
-
 	public String[] cleanLine(String[] words) {
 		List<String> wordList = new ArrayList<>();
 		List<String> cleanedList = new ArrayList<>();

@@ -1,8 +1,5 @@
 package ujm.dsc.ri.core;
 
-import lombok.Data;
-
-@Data
 public class Score implements Comparable<Score> {
 
 	private String sec;
@@ -18,6 +15,22 @@ public class Score implements Comparable<Score> {
 	@Override
 	public int compareTo(Score s) {
 		return (int) (this.score - s.score);
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public String getSec() {
+		return sec;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public void setSec(String sec) {
+		this.sec = sec;
 	}
 
 }

@@ -518,7 +518,7 @@ doi</link></writing>
 <list>
 <entry level="1" type="bullet">
 
- <cite id="CITEREFKirschMitzenmacher2006" style="font-style:normal">Kirsch, Adam&#32;&amp;&#32;Mitzenmacher, Michael&#32;(2006),&#32;<weblink xlink:type="simple" xlink:href="http://www.eecs.harvard.edu/~kirsch/pubs/bbbf/esa06.pdf">
+ <cite id="CITEREFKirschMitzenmacher2006" style="font-style:normal">Kirsch, Adam&#32;&amp;&#32;Mitzenmacher, Michael&#32;(2006),&#32;<weblink xlink:type="simple" xlink:href="https://www.eecs.harvard.edu/~michaelm/postscripts/tr-02-05.pdf">
 "Less Hashing, Same Performance: Building a Better Bloom Filter"</weblink>,&#32;<it>Algorithms – ESA 2006, 14th Annual European Symposium</it>, Springer-Verlag, Lecture Notes in Computer Science 4168, pp. 456–467, <document wordnetid="106470073" confidence="0.8">
 <written_communication wordnetid="106349220" confidence="0.8">
 <writing wordnetid="106362953" confidence="0.8">
